@@ -57,7 +57,7 @@ export default function DetailSurah() {
       <div className="mt-8">
         {detailSurah?.ayat?.map((ayat) => (
           <div
-            className="w-full flex items-center justify-between py-8"
+            className="w-full flex items-center justify-between py-10"
             key={ayat.nomorAyat}
           >
             <div className="relative">
@@ -67,13 +67,16 @@ export default function DetailSurah() {
               </p>
             </div>
             <div
-              className="text-right flex-1/2 pl-12 sm:pl-20 lg:pl-72 cursor-pointer group"
+              className="text-right flex-1/2 pl-12 sm:pl-20 lg:pl-72 cursor-pointer group flex flex-col gap-5"
               onClick={() => audioPlay(ayat.nomorAyat)}
             >
-              <h1 className="lg:text-2xl group-hover:text-green-800 ">
+              <h1 className="text-xl md:text-2xl lg:text-3xl group-hover:text-green-900 ">
                 {ayat.teksArab}
               </h1>
-              <p className="text-[12px] lg:text-sm group-hover:text-green-800 ">
+              <p className="text-[12px] md:text-[13px] lg:text-[15px] group-hover:text-green-900 text-green-800">
+                {ayat.teksLatin}
+              </p>
+              <p className="text-[12px] md:text-[13px] lg:text-[15px] group-hover:text-green-900">
                 {ayat.teksIndonesia}
               </p>
               <audio
