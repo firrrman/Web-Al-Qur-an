@@ -8,7 +8,9 @@ interface DetailSurah {
     teksArab: string;
     teksLatin: string;
     teksIndonesia: string;
-    audio: string;
+    audio: {
+      "05": string;
+    };
   }[];
 }
 
@@ -27,6 +29,29 @@ export default function DetailSurah() {
 
   console.log(detailSurah);
 
+  // Menambahkan state untuk melacak ayat yang sedang diputar
+  const [currentAyat, setCurrentAyat] = useState<number | null>(null);
+
+  function audioPlay(nomorAyat: number) {
+    const audioElement = document.getElementById(
+      `audioAyat-${nomorAyat}`
+    ) as HTMLAudioElement;
+    if (audioElement) {
+      // Menghentikan audio yang sedang diputar jika ada
+      if (currentAyat !== null && currentAyat !== nomorAyat) {
+        const prevAudio = document.getElementById(
+          `audioAyat-${currentAyat}`
+        ) as HTMLAudioElement;
+        if (prevAudio) {
+          prevAudio.pause();
+          prevAudio.currentTime = 0;
+        }
+      }
+      audioElement.play();
+      setCurrentAyat(nomorAyat);
+    }
+  }
+
   return (
     <div>
       <div className="mt-8">
@@ -37,13 +62,24 @@ export default function DetailSurah() {
           >
             <div className="relative">
               <img src="/img/symbol.png" alt="" className="w-10" />
-              <p className="absolute top-0 bottom-0 left-0 right-0 text-[8px] text-green-800 font-semibold mb-[2px] flex justify-center items-center">
+              <p className="absolute top-0 bottom-0 left-0 right-0 text-[8px] text-green-800 font-semibold flex justify-center items-center">
                 {ayat.nomorAyat}
               </p>
             </div>
-            <div className="text-right flex-1/2 pl-12 sm:pl-20 lg:pl-72">
-              <h1 className="lg:text-2xl">{ayat.teksArab}</h1>
-              <p className="text-[12px] lg:text-sm">{ayat.teksIndonesia}</p>
+            <div
+              className="text-right flex-1/2 pl-12 sm:pl-20 lg:pl-72 cursor-pointer group"
+              onClick={() => audioPlay(ayat.nomorAyat)}
+            >
+              <h1 className="lg:text-2xl group-hover:text-green-800 ">
+                {ayat.teksArab}
+              </h1>
+              <p className="text-[12px] lg:text-sm group-hover:text-green-800 ">
+                {ayat.teksIndonesia}
+              </p>
+              <audio
+                src={ayat.audio?.["05"]}
+                id={`audioAyat-${ayat.nomorAyat}`}
+              ></audio>
             </div>
           </div>
         ))}

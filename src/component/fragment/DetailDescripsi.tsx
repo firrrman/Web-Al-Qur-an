@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDetailSurah } from "../../service/alquranApi";
-import Audio from "../element/Audio";
+import Audio from "../element/AudioFull";
 
 interface DetailSurah {
   nama: string;
@@ -30,7 +30,7 @@ export default function DetailSurah() {
     <div>
       <div className="pt-10 flex items-center gap-5 font-semibold text-green-800">
         {/* untuk kembali ke home */}
-        <a href="/" className="text-4xl font-bold mb-1">
+        <a href="/" className="text-4xl font-bold mb-2">
           ←
         </a>
 

@@ -4,7 +4,7 @@ import SurahSebelumSesudah from "../component/fragment/SurahSebelumSesudah";
 
 export default function DetailSurah() {
   return (
-    <div className="px-10 pb-24">
+    <div className="px-10 pb-24 lg:px-16">
       {/* deskripsi */}
       <DetailDescripsi />
 

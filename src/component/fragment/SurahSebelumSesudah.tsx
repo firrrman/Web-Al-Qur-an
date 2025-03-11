@@ -42,7 +42,7 @@ export default function BeforeAfter() {
     : undefined;
 
   return (
-    <div className="fixed bottom-0 right-0 left-0 bg-white p-5 md:p-7 px-10 md:px-10 border-t-2 border-gray-500 flex justify-between items-center rounded-t-3xl">
+    <div className="fixed bottom-0 right-0 left-0 bg-white p-5 md:p-7 px-10 lg:px-16 md:px-10 border-t-2 border-gray-500 flex justify-between items-center rounded-t-3xl">
       <div className="flex items-center gap-2">
         <Link to={`/${sebelumnya}`}>
           <img src="/img/left-arrow.png" className="w-7 lg:w-10" alt="" />
@@ -57,7 +57,11 @@ export default function BeforeAfter() {
           {detailSurah?.suratSelanjutnya.namaLatin}
         </p>
         <Link to={`/${selanjutnya}`}>
-          <img src="/img/left-arrow.png" className="w-7 rotate-180 lg:w-10" alt="" />
+          <img
+            src="/img/left-arrow.png"
+            className="w-7 rotate-180 lg:w-10"
+            alt=""
+          />
         </Link>
       </div>
     </div>
