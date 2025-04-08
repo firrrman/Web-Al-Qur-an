@@ -67,7 +67,7 @@ const InstallButton = () => {
   return (
     <button
       onClick={handleInstallClick}
-      className="install-button bg-green-800 hover:bg-green-600 transition-all absolute top-4 right-8 lg:right-16 cursor-pointer text-white font-semibold p-2 rounded flex items-center"
+      className="install-button bg-green-800 hover:bg-green-900 transition-all absolute z-50 top-4 right-8 lg:right-16 cursor-pointer text-xs text-white font-semibold p-1.5 rounded flex items-center"
     >
       <svg
         className="w-5 h-5 mr-2"

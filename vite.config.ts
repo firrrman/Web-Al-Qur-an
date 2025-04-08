@@ -15,7 +15,7 @@ export default defineConfig({
         name: "Al-Qur'an Digital",
         short_name: "Al-Qur'an",
         description: "Aplikasi web Al-Qur'an digital",
-        theme_color: "#4CAF50",
+        theme_color: "transparent",
         background_color: "#ffffff",
         display: "standalone",
         icons: [
