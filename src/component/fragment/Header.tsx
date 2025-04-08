@@ -10,7 +10,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
       className={`w-full flex items-center absolute z-50 gap-2 p-4 px-8 lg:px-16 ${props.className} `}
     >
       <img src="/img/islam.png" alt="" className="w-[30px]" />
-      <p className="text-white">Alquran Online</p>
+      <p className="text-white">Al-Qur'an Digital</p>
     </div>
   );
 };
