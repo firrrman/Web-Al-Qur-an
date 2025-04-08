@@ -21,7 +21,7 @@ export default defineConfig({
         icons: [
           {
             src: "/icons/pwa-192x192.png",
-            sizes: "192x192",
+            sizes: "128x128",
             type: "image/png",
           },
           {
@@ -31,7 +31,7 @@ export default defineConfig({
           },
           {
             src: "/icons/pwa-maskable-192x192.png",
-            sizes: "192x192",
+            sizes: "128x128",
             type: "image/png",
             purpose: "maskable",
           },
