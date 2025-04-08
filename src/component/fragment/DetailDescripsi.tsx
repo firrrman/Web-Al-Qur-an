@@ -8,7 +8,13 @@ interface DetailSurah {
   tempatTurun: string;
 }
 
-export const DetailDescripsi: React.FC<DetailSurah> = (props) => {
+export function DetailDescripsi({
+  nama,
+  arti,
+  namaLatin,
+  jumlahAyat,
+  tempatTurun,
+}: DetailSurah) {
   return (
     <div>
       <div className="pt-10 flex items-center gap-5 font-semibold text-green-800">
@@ -17,7 +23,7 @@ export const DetailDescripsi: React.FC<DetailSurah> = (props) => {
           ←
         </a>
 
-        <h1 className="md:text-lg lg:text-xl">{props.namaLatin}</h1>
+        <h1 className="md:text-lg lg:text-xl">{namaLatin}</h1>
       </div>
 
       {/* deskripsi singkat */}
@@ -33,12 +39,12 @@ export const DetailDescripsi: React.FC<DetailSurah> = (props) => {
         <div className="absolute top-0 bottom-0 left-0 right-0 text-white flex flex-col lg:flex-row lg:justify-between justify-center items-center gap-3 lg:p-20">
           <div className="flex flex-col justify-center items-center lg:items-start gap-1 lg:gap-7">
             <h1 className="text-4xl md:text-5xl lg:text-8xl xl:text-9xl">
-              {props.nama}
+              {nama}
             </h1>
-            <h1 className="md:text-xl lg:text-2xl">{props.arti}</h1>
+            <h1 className="md:text-xl lg:text-2xl">{arti}</h1>
             <div className="border-t-[1px] opacity-50 w-full lg:hidden"></div>
             <p className="text-[12px] md:text-sm">
-              {props.tempatTurun} | {props.jumlahAyat} Ayat
+              {tempatTurun} | {jumlahAyat} Ayat
             </p>
           </div>
 
@@ -48,6 +54,6 @@ export const DetailDescripsi: React.FC<DetailSurah> = (props) => {
       </div>
     </div>
   );
-};
+}
 
 export default DetailDescripsi;
