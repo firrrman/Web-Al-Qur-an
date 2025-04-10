@@ -1,47 +1,49 @@
-import { useState, useEffect } from "react";
-import { getSurah } from "../../service/alquranApi";
-import { Link } from "react-router-dom";
+interface Surah {
+  nomor: number;
+  nama: string;
+  namaLatin: string;
+  jumlahAyat: number;
+  tempatTurun: string;
+  arti?: string;
+}
 
-export default function Card() {
-  interface Surah {
-    nomor: number;
-    nama: string;
-    namaLatin: string;
-    jumlahAyat: number;
-    tempatTurun: string;
-  }
+interface CardProps {
+  surah: Surah;
+  onClick: () => void;
+}
 
-  const [surah, setSurah] = useState<Surah[]>([]);
-  useEffect(() => {
-    getSurah().then((respon) => {
-      console.log(respon);
-      setSurah(respon);
-    });
-  }, []);
-
-  console.log(surah);
-
-  return surah.map((item) => (
-    <Link
-      to={`/${item.nomor}`}
-      className="p-4 w-full shadow-sm bg-white shadow-gray-400 flex justify-between items-center text-sm hover:scale-105 transition-transform duration-300"
-      key={item.nomor}
+export default function Card({ surah, onClick }: CardProps) {
+  return (
+    <div
+      onClick={onClick}
+      className="cursor-pointer hover:scale-[1.02] transition-transform duration-200"
     >
-      <div className="flex gap-2 items-center">
-        <div className="relative">
-          <img src="/img/symbol.png" alt="" className="w-10" />
-          <p className="absolute top-0 bottom-0 left-0 right-0 text-[8px] text-green-800 font-semibold mb-[2px] flex justify-center items-center">
-            {item.nomor}
-          </p>
-        </div>
-        <div>
-          <h1>{item.namaLatin}</h1>
-          <p className="text-[10px] mb-1 text-green-800">
-            {item.tempatTurun} | {item.jumlahAyat}
-          </p>
+      <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg">
+        <div className="p-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center pb-1 justify-center w-10 h-10 rounded-full text-[8px] text-green-800 font-semibold relative">
+              <img src="/img/symbol.png" alt="" className="absolute" />
+              {surah.nomor}
+            </div>
+            <div className="text-right flex-1 ml-3">
+              <h3 className="text-lg font-semibold text-gray-800">
+                {surah.namaLatin}
+              </h3>
+              <p className="text-sm text-gray-500">
+                {surah.tempatTurun} • {surah.jumlahAyat} ayat
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-between items-center">
+            <h2 className="text-2xl font-arabic text-right w-full">
+              {surah.nama}
+            </h2>
+          </div>
+          {surah.arti && (
+            <p className="mt-2 text-sm text-gray-600">"{surah.arti}"</p>
+          )}
         </div>
       </div>
-      <h1>{item.nama}</h1>
-    </Link>
-  ));
+    </div>
+  );
 }
