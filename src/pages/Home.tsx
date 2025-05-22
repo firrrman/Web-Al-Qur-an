@@ -1,5 +1,5 @@
 // Example 1: Using FuzzySearch in Home.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../component/fragment/Header";
 import Card from "../component/fragment/Card";
@@ -83,7 +83,7 @@ export default function Home() {
           initialSearchType="nama"
           availableSearchTypes={availableSearchTypes}
           showThresholdSlider={true}
-          initialThreshold={2}
+          initialThreshold={0}
           placeholder="Cari nama surah..."
           getSearchableFields={getSearchableFields}
           getItemIdentifier={getItemIdentifier}

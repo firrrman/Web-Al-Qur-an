@@ -95,7 +95,7 @@ export default function DetailSurah() {
             initialSearchType="all"
             availableSearchTypes={availableSearchTypes}
             showThresholdSlider={true}
-            initialThreshold={2}
+            initialThreshold={0}
             placeholder="Cari ayat..."
             getSearchableFields={getSearchableFields}
             getItemIdentifier={getItemIdentifier}
