@@ -35,7 +35,7 @@ function levenshteinDistance(a: string, b: string): number {
 function fuzzyMatch(
   text: string,
   query: string,
-  threshold: number = 2,
+  threshold: number = 2
 ): boolean {
   const textLower = text.toLowerCase();
   const queryLower = query.toLowerCase();
@@ -135,7 +135,8 @@ const FuzzySearch: React.FC<FuzzySearchProps> = ({
   // Update search results whenever search parameters change
   React.useEffect(() => {
     handleSearch();
-  },);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, numberInput, searchType, fuzzyThreshold, data]); // Fixed dependency array
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
