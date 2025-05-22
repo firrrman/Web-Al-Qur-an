@@ -212,7 +212,7 @@ const FuzzySearch: React.FC<FuzzySearchProps> = ({
           <input
             type="range"
             min="0"
-            max="5"
+            max="3"
             value={fuzzyThreshold}
             onChange={handleThresholdChange}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
