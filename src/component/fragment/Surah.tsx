@@ -1,8 +1,6 @@
-// Example 2: Using FuzzySearch in DetailSurah.tsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailSurah } from "../../service/alquranApi";
-import FuzzySearch, { SearchType } from "./FuzzySearch";
 
 interface Ayat {
   nomorAyat: number;
@@ -18,11 +16,13 @@ interface DetailSurah {
   ayat: Ayat[];
 }
 
-export default function DetailSurah() {
+export default function Surah() {
   const { nomor } = useParams();
   const [detailSurah, setDetailSurah] = useState<DetailSurah>();
   const [filteredAyat, setFilteredAyat] = useState<Ayat[]>([]);
   const [currentAyat, setCurrentAyat] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState("all");
 
   useEffect(() => {
     if (nomor) {
@@ -32,6 +32,39 @@ export default function DetailSurah() {
       });
     }
   }, [nomor]);
+
+  useEffect(() => {
+    if (!detailSurah?.ayat) return;
+
+    if (!searchQuery.trim()) {
+      setFilteredAyat(detailSurah.ayat);
+      return;
+    }
+
+    const filtered = detailSurah.ayat.filter((ayat) => {
+      const query = searchQuery.toLowerCase().trim();
+
+      switch (searchType) {
+        case "arab":
+          return ayat.teksArab.toLowerCase().includes(query);
+        case "latin":
+          return ayat.teksLatin.toLowerCase().includes(query);
+        case "indonesia":
+          return ayat.teksIndonesia.toLowerCase().includes(query);
+        case "nomor":
+          return ayat.nomorAyat.toString().includes(query);
+        default:
+          return (
+            ayat.teksArab.toLowerCase().includes(query) ||
+            ayat.teksLatin.toLowerCase().includes(query) ||
+            ayat.teksIndonesia.toLowerCase().includes(query) ||
+            ayat.nomorAyat.toString().includes(query)
+          );
+      }
+    });
+
+    setFilteredAyat(filtered);
+  }, [searchQuery, searchType, detailSurah]);
 
   function audioPlay(nomorAyat: number) {
     const audioElement = document.getElementById(
@@ -52,55 +85,41 @@ export default function DetailSurah() {
     }
   }
 
-  // Available search types for the DetailSurah page
-  const availableSearchTypes = [
-    { value: "arab" as SearchType, label: "Teks Arab" },
-    { value: "latin" as SearchType, label: "Teks Latin" },
-    { value: "indonesia" as SearchType, label: "Arti Indonesia" },
-    { value: "nomor" as SearchType, label: "Nomor Ayat" },
+  const searchOptions = [
+    { value: "arab", label: "Teks Arab" },
+    { value: "latin", label: "Teks Latin" },
+    { value: "indonesia", label: "Arti Indonesia" },
+    { value: "nomor", label: "Nomor Ayat" },
   ];
-
-  // Define how to get searchable fields from an Ayat based on search type
-  const getSearchableFields = (
-    item: unknown,
-    searchType: SearchType
-  ): string[] => {
-    const ayat = item as Ayat;
-    switch (searchType) {
-      case "arab":
-        return [ayat.teksArab];
-      case "latin":
-        return [ayat.teksLatin];
-      case "indonesia":
-        return [ayat.teksIndonesia];
-      default:
-        return [];
-    }
-  };
-
-  // Define how to get the identifier for an Ayat
-  const getItemIdentifier = (item: unknown): number => {
-    const ayat = item as Ayat;
-    return ayat.nomorAyat;
-  };
 
   return (
     <div>
       {/* Komponen Pencarian */}
       <div className="mt-6 mb-4">
-        {detailSurah?.ayat && (
-          <FuzzySearch
-            onSearchResults={(results) => setFilteredAyat(results as Ayat[])}
-            data={detailSurah.ayat}
-            initialSearchType="all"
-            availableSearchTypes={availableSearchTypes}
-            showThresholdSlider={true}
-            initialThreshold={0}
-            placeholder="Cari ayat..."
-            getSearchableFields={getSearchableFields}
-            getItemIdentifier={getItemIdentifier}
-          />
-        )}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div>
+            <select
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+              className="px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
+            >
+              {searchOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Cari ayat..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+        </div>
 
         {filteredAyat && (
           <p className="mt-2 text-sm text-green-700">
