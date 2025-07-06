@@ -5,6 +5,7 @@ import Card from "../component/fragment/Card";
 import "../App.css";
 import HeroSection from "../component/fragment/HeroSection";
 import { getSurah } from "../service/alquranApi";
+import Footer from "../component/template/Footer";
 
 interface Surah {
   nomor: number;
@@ -147,7 +148,7 @@ export default function Home() {
 
   useEffect(() => {
     handleSearch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, numberInput, searchType, fuzzyThreshold, surahs]);
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,102 +174,107 @@ export default function Home() {
   };
 
   return (
-    <div className="relative pb-10 min-h-screen bg-gray-50">
-      <Header className="bg-transparent" />
-      <HeroSection />
+    <>
+      <div className="relative min-h-screen bg-gray-50">
+        <Header className="bg-transparent" />
+        <HeroSection />
 
-      {/* Search Bar */}
-      <div className="relative z-20 px-4 md:px-8 lg:px-16 -mt-8">
-        <div className="w-full bg-white p-4 rounded-lg shadow-md">
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
-            {availableSearchTypes.length > 0 && (
-              <div className="w-full md:w-48">
-                <select
-                  value={searchType}
-                  onChange={handleSearchTypeChange}
-                  className="w-full p-2 border bg-white border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  {availableSearchTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
+        {/* Search Bar */}
+        <div className="relative z-20 px-4 md:px-8 lg:px-16 -mt-8">
+          <div className="w-full bg-white p-4 rounded-lg shadow-md">
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+              {availableSearchTypes.length > 0 && (
+                <div className="w-full md:w-48">
+                  <select
+                    value={searchType}
+                    onChange={handleSearchTypeChange}
+                    className="w-full p-2 border bg-white border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    {availableSearchTypes.map((type) => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <div className="flex-grow">
+                {searchType === "nomor" ? (
+                  <input
+                    type="number"
+                    placeholder="Masukkan nomor..."
+                    value={numberInput}
+                    onChange={handleNumberInputChange}
+                    className="w-full p-2 bg-white border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    placeholder="Cari nama surah..."
+                    value={searchTerm}
+                    onChange={handleSearchTermChange}
+                    className="w-full p-2 bg-white border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                )}
+              </div>
+            </div>
+            {searchType !== "nomor" && (
+              <div className="bg-gray-50 p-3 rounded-md">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tingkat Toleransi Kesalahan: {fuzzyThreshold}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="3"
+                  value={fuzzyThreshold}
+                  onChange={handleThresholdChange}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>Ketat (0)</span>
+                  <span>Longgar (3)</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Nilai 0 = pencarian harus persis sama, Nilai 3 = toleransi
+                  kesalahan tinggi. Semakin tinggi nilai, semakin banyak hasil
+                  yang mirip akan ditemukan.
+                </p>
               </div>
             )}
-            <div className="flex-grow">
-              {searchType === "nomor" ? (
-                <input
-                  type="number"
-                  placeholder="Masukkan nomor..."
-                  value={numberInput}
-                  onChange={handleNumberInputChange}
-                  className="w-full p-2 bg-white border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              ) : (
-                <input
-                  type="text"
-                  placeholder="Cari nama surah..."
-                  value={searchTerm}
-                  onChange={handleSearchTermChange}
-                  className="w-full p-2 bg-white border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              )}
-            </div>
           </div>
-          {searchType !== "nomor" && (
-            <div className="bg-gray-50 p-3 rounded-md">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tingkat Toleransi Kesalahan: {fuzzyThreshold}
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="3"
-                value={fuzzyThreshold}
-                onChange={handleThresholdChange}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>Ketat (0)</span>
-                <span>Longgar (3)</span>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Nilai 0 = pencarian harus persis sama, Nilai 3 = toleransi
-                kesalahan tinggi. Semakin tinggi nilai, semakin banyak hasil
-                yang mirip akan ditemukan.
-              </p>
-            </div>
+
+          {filteredSurahs.length > 0 && (
+            <p className="mt-2 text-sm text-green-700">
+              {filteredSurahs.length} surah ditemukan
+            </p>
           )}
         </div>
 
-        {filteredSurahs.length > 0 && (
-          <p className="mt-2 text-sm text-green-700">
-            {filteredSurahs.length} surah ditemukan
-          </p>
-        )}
+        {/* Content */}
+        <div className="relative z-10 p-4 px-4 md:px-8 lg:px-16 rounded-t-4xl bg-white -mt-5 w-full">
+          {isLoading ? (
+            <div className="mt-10 text-center text-gray-500">
+              Memuat data...
+            </div>
+          ) : filteredSurahs.length === 0 ? (
+            <div className="mt-10 text-center text-gray-500">
+              Tidak ditemukan surah yang sesuai dengan pencarian Anda.
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredSurahs.map((surah) => (
+                <Card
+                  key={surah.nomor}
+                  surah={surah}
+                  onClick={() => handleCardClick(surah.nomor)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* Content */}
-      <div className="relative z-10 p-4 px-4 md:px-8 lg:px-16 rounded-t-4xl bg-white -mt-5 w-full">
-        {isLoading ? (
-          <div className="mt-10 text-center text-gray-500">Memuat data...</div>
-        ) : filteredSurahs.length === 0 ? (
-          <div className="mt-10 text-center text-gray-500">
-            Tidak ditemukan surah yang sesuai dengan pencarian Anda.
-          </div>
-        ) : (
-          <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredSurahs.map((surah) => (
-              <Card
-                key={surah.nomor}
-                surah={surah}
-                onClick={() => handleCardClick(surah.nomor)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }
